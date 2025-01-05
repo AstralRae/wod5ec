@@ -2,7 +2,7 @@
   "id": "vtm5ec",
   "title": "World of Darkness 5e Customized",
   "description": "World of Darkness 5e system for Foundry VTT",
-  "version": "5.0.11",
+  "version": "20250105",
   "compatibility": {
     "minimum": "12",
     "verified": "12.331",
@@ -268,8 +268,8 @@
   "url": "https://github.com/AstralRae/wod5ec",
   "bugs": "https://github.com/AstralRae/wod5ec/issues",
   "background": "systems/vtm5ec/assets/images/wodcity.jpg",
-  "manifest": "https://github.com/AstralRae/wod5ec/releases/download/5.0.11/system.json",
-  "download": "https://github.com/AstralRae/wod5ec/releases/download/5.0.11/vtm5ec.zip",
+  "manifest": "https://github.com/AstralRae/wod5ec/releases/download/20250105/system.json",
+  "download": "https://github.com/AstralRae/wod5ec/releases/download/20250105/vtm5ec.zip",
   "flags": {
     "hotReload": {
       "extensions": [
