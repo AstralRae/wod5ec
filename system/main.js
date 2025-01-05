@@ -19,7 +19,7 @@ import { loadHelpers } from './scripts/helpers.js'
 import { loadSettings, _updatePreferredColorScheme, _updateHeaderFontPreference, _updateXpIconOverrides } from './scripts/settings.js'
 import { PauseChanges } from './ui/pause.js'
 // WOD5E functions and classes
-import { MortalDie, VampireDie, VampireHungerDie, HunterDie, HunterDesperationDie, WerewolfDie, WerewolfRageDie } from './dice/splat-dice.js'
+import { MortalDie, VampireDie, VampireHungerDie, HunterDie, HunterDesperationDie, WerewolfDie, WerewolfRageDie, ChangelingDie, ChangelingNightmareDie } from './dice/splat-dice.js'
 import { migrateWorld } from './scripts/migration.js'
 import { willpowerReroll } from './scripts/willpower-reroll.js'
 import { wod5eAPI } from './api/wod5e-api.js'
@@ -31,6 +31,8 @@ import { Features } from './api/def/features.js'
 import { ActorTypes } from './api/def/actortypes.js'
 import { ItemTypes } from './api/def/itemtypes.js'
 import { Disciplines } from './api/def/disciplines.js'
+import { Arts } from './api/def/arts.js'
+import { Realms } from './api/def/realms.js'
 import { Edges } from './api/def/edges.js'
 import { Renown } from './api/def/renown.js'
 import { WereForms } from './api/def/were-forms.js'
@@ -56,6 +58,8 @@ Hooks.once('init', async function () {
   CONFIG.Dice.terms.s = HunterDesperationDie
   CONFIG.Dice.terms.w = WerewolfDie
   CONFIG.Dice.terms.r = WerewolfRageDie
+  CONFIG.Dice.terms.c = ChangelingDie
+  CONFIG.Dice.terms.n = ChangelingNightmareDie
 
   // Register actor sheet application classes
   Actors.unregisterSheet('core', ActorSheet)
@@ -64,7 +68,7 @@ Hooks.once('init', async function () {
   for (const [, value] of Object.entries(actorTypesList)) {
     const { label, types, sheetClass } = value
 
-    Actors.registerSheet('vtm5e', sheetClass, {
+    Actors.registerSheet('vtm5ec', sheetClass, {
       label,
       types,
       makeDefault: true
@@ -78,7 +82,7 @@ Hooks.once('init', async function () {
   for (const [, value] of Object.entries(itemTypesList)) {
     const { label, types, sheetClass } = value
 
-    Items.registerSheet('vtm5e', sheetClass, {
+    Items.registerSheet('vtm5ec', sheetClass, {
       label,
       types,
       makeDefault: true
@@ -157,6 +161,8 @@ Hooks.once('ready', async function () {
     ActorTypes,
     ItemTypes,
     Disciplines,
+    Arts,
+    Realms,
     Edges,
     Renown,
     Gifts,
@@ -176,7 +182,7 @@ Hooks.once('ready', async function () {
       const { settingId, cssVariable } = settings[settingKey]
 
       // Get the current value of the setting
-      const settingValue = game.settings.get('vtm5e', settingId)
+      const settingValue = game.settings.get('vtm5ec', settingId)
 
       // Update the CSS variable
       _updateCSSVariable(settingId, cssVariable, settingValue)

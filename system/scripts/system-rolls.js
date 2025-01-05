@@ -6,6 +6,7 @@ import { generateRollMessage } from './rolls/roll-message.js'
 import { getSituationalModifiers } from './rolls/situational-modifiers.js'
 import { _damageWillpower } from './rolls/willpower-damage.js'
 import { _increaseHunger } from './rolls/increase-hunger.js'
+import { _increaseNightmare } from './rolls/increase-nightmare.js'
 import { _decreaseRage } from './rolls/decrease-rage.js'
 import { _applyOblivionStains } from './rolls/apply-oblivion-stains.js'
 
@@ -56,7 +57,8 @@ class WOD5eDice {
     macro = '',
     disableMessageOutput = false,
     advancedCheckDice = 0,
-    system = actor?.system?.gamesystem || 'mortal'
+    system = actor?.system?.gamesystem || 'mortal',
+    increaseNightmare = false
   }) {
     // Inner roll function
     const _roll = async (inputBasicDice, inputAdvancedDice, $form) => {
@@ -72,6 +74,9 @@ class WOD5eDice {
           inputAdvancedDice = 1
         } else if (system === 'werewolf' && actor.system.rage.value > 0) {
           // Werewolves with rage above 0 should be rolling 1 rage die
+          inputAdvancedDice = 1
+        } else if (system === 'changeling' && actor.system.nightmare.value > 0) {
+          // Changelings with nightmare above 0 should be rolling 1 nightmare die
           inputAdvancedDice = 1
         } else {
           // In all other cases, we just roll one basic die
@@ -144,7 +149,7 @@ class WOD5eDice {
       if (roll.terms[2]) await handleFailure(system, roll.terms[2].results)
 
       // Handle willpower damage
-      if (willpowerDamage > 0 && game.settings.get('vtm5e', 'automatedWillpower')) _damageWillpower(null, null, actor, willpowerDamage, rollMode)
+      if (willpowerDamage > 0 && game.settings.get('vtm5ec', 'automatedWillpower')) _damageWillpower(null, null, actor, willpowerDamage, rollMode)
 
       // Roll any advanced check dice that need to be rolled in a separate rollmessage
       if (advancedCheckDice > 0) {
@@ -158,7 +163,9 @@ class WOD5eDice {
           rollMode,
           quickRoll: true,
           increaseHunger: system === 'vampire',
-          decreaseRage: system === 'werewolf'
+          decreaseRage: system === 'werewolf',
+          increaseNightmare: system === 'changeling'
+          // TODO handle changeling nightmare
         })
       }
 
@@ -231,7 +238,7 @@ class WOD5eDice {
       const situationalModifiers = actor ? await getSituationalModifiers({ actor, selectors }) : {}
 
       // Roll dialog template
-      const dialogTemplate = `systems/vtm5e/display/ui/${system}-roll-dialog.hbs`
+      const dialogTemplate = `systems/vtm5ec/display/ui/${system}-roll-dialog.hbs`
       // Data that the dialog template needs
       const dialogData = {
         system,
@@ -348,12 +355,12 @@ class WOD5eDice {
 
                 if (modifierIsNegative) {
                   // Apply dice to basicDice unless basicDice is 0
-                  if ((system === 'vampire' || system === 'werewolf') && basicValue === 0) {
+                  if ((system === 'vampire' || system === 'werewolf' || system === 'changeling') && basicValue === 0) {
                     applyDiceTo = 'advanced'
                   }
                 } else {
                   // Apply dice to advancedDice if advancedValue is below the actor's hunger/rage value
-                  if ((system === 'vampire' && advancedValue < actorData?.hunger.value) || (system === 'werewolf' && advancedValue < actorData?.rage.value)) {
+                  if ((system === 'vampire' && advancedValue < actorData?.hunger.value) || (system === 'werewolf' && advancedValue < actorData?.rage.value) || (system === 'changeling' && advancedValue < actorData?.nightmare.value)) {
                     applyDiceTo = 'advanced'
                   }
                 }
@@ -375,10 +382,14 @@ class WOD5eDice {
                     if (system === 'vampire') {
                       checkValue = actorData?.hunger.value
                     }
+                    if (system === 'changeling') {
+                      checkValue = actorData?.nightmare.value
+                    }
                     if (system === 'werewolf') {
                       checkValue = actorData?.rage.value
                     }
 
+                    // actorData?.hunger.value === checkValue if the system is vampire so i have no idea why this is here. my guess is dealing with mortals
                     if ((newValue > actorData?.hunger.value || newValue > checkValue) && !(event.currentTarget.dataset.applyDiceTo === 'advanced')) {
                       // Check for any excess and apply it to basicDice
                       const excess = newValue - checkValue
@@ -475,15 +486,17 @@ class WOD5eDice {
       const failures = diceResults.filter(result => result.success === false && !result.discarded).length
 
       if (failures > 0) {
-        if (system === 'vampire' && increaseHunger && game.settings.get('vtm5e', 'automatedHunger')) {
+        if (system === 'vampire' && increaseHunger && game.settings.get('vtm5ec', 'automatedHunger')) {
           _increaseHunger(actor, failures, rollMode)
-        } else if (system === 'werewolf' && decreaseRage && game.settings.get('vtm5e', 'automatedRage')) {
+        } else if (system === 'werewolf' && decreaseRage && game.settings.get('vtm5ec', 'automatedRage')) {
           _decreaseRage(actor, failures, rollMode)
+        } else if (system === 'changeling' && increaseNightmare && game.settings.get('vtm5ec', 'automatedNightmare')) {
+          _increaseNightmare(actor, failures, rollMode)
         }
       }
 
       // Handle Oblivion rouse checks here
-      if (selectors.includes('oblivion-rouse') && game.settings.get('vtm5e', 'automatedOblivion')) {
+      if (selectors.includes('oblivion-rouse') && game.settings.get('vtm5ec', 'automatedOblivion')) {
         const oblivionTriggers = diceResults.filter(result => [1, 10].includes(result.result) && !result.discarded).length
 
         if (oblivionTriggers > 0) {

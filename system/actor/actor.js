@@ -9,10 +9,13 @@ import { getDerivedExperience } from './scripts/experience.js'
 import { prepareDisciplines } from './vtm/scripts/prepare-data.js'
 import { prepareEdges } from './htr/scripts/prepare-data.js'
 import { prepareGifts, prepareFormData } from './wta/scripts/prepare-data.js'
+import { prepareArts, prepareRealms } from './ctd/scripts/prepare-data.js'
 import { prepareExceptionalDicePools } from './scripts/prepare-exceptional-dice-pools.js'
 import { getVampireModifiers } from './vtm/scripts/vampire-bonuses.js'
 import { getHunterModifiers } from './htr/scripts/hunter-bonuses.js'
 import { Disciplines } from '../api/def/disciplines.js'
+import { Arts } from '../api/def/arts.js'
+import { Realms } from '../api/def/realms.js'
 import { Skills } from '../api/def/skills.js'
 import { Attributes } from '../api/def/attributes.js'
 import { Renown } from '../api/def/renown.js'
@@ -97,6 +100,12 @@ export class WoDActor extends Actor {
           } else if (change.key === 'disciplines') {
             // Apply to all disciplines
             change.key = Disciplines.getList({ useValuePath: true })
+          } else if (change.key === 'arts') {
+            // Apply to all arts
+            change.key = Arts.getList({ useValuePath: true })
+          } else if (change.key === 'realms') {
+            // Apply to all realms
+            change.key = Realms.getList({ useValuePath: true })
           } else if (change.key === 'renown') {
             // Apply to all renown
             change.key = Renown.getList({ useValuePath: true })
@@ -157,7 +166,8 @@ export class WoDActor extends Actor {
       ghoul: 'vampire',
       hunter: 'hunter',
       werewolf: 'werewolf',
-      spirit: 'werewolf'
+      spirit: 'werewolf',
+      changeling: 'changeling'
     }
 
     // Set gamesystem of an SPC
@@ -209,8 +219,13 @@ export class WoDActor extends Actor {
       }
     }
 
+    if (systemData?.gamesystem === 'changeling') {
+      systemData.arts = await prepareArts(actorData)
+      systemData.realms = await prepareRealms(actorData)
+    }
+
     // If the actor is a player, update the default permissions to limited
-    if (this.hasPlayerOwner && !this.getFlag('vtm5e', 'manualDefaultOwnership') && game.user.isGM) {
+    if (this.hasPlayerOwner && !this.getFlag('vtm5ec', 'manualDefaultOwnership') && game.user.isGM) {
       this.update({ 'ownership.default': CONST.DOCUMENT_OWNERSHIP_LEVELS.LIMITED })
     }
 
@@ -272,7 +287,7 @@ export class WoDActor extends Actor {
 
     // If the default ownership is ever not limited, update the manualDefaultOwnership flag
     if (actor.ownership.default !== CONST.DOCUMENT_OWNERSHIP_LEVELS.LIMITED) {
-      await actor.setFlag('vtm5e', 'manualDefaultOwnership', true)
+      await actor.setFlag('vtm5ec', 'manualDefaultOwnership', true)
     }
 
     // If the actor is a group...

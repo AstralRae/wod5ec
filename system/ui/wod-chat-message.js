@@ -59,6 +59,11 @@ export class WoDChatMessage extends ChatMessage {
           this.flags.system = 'vampire'
         }
 
+        // Check for Changeling dice
+        if (term.constructor.name === 'ChangelingDie' || term.constructor.name === 'ChangelingNightmareDie') {
+          this.flags.system = 'changeling'
+        }
+
         // Check for Hunter dice
         if (term.constructor.name === 'HunterDie' || term.constructor.name === 'HunterDesperationDie') {
           this.flags.system = 'hunter'
@@ -84,7 +89,7 @@ export class WoDChatMessage extends ChatMessage {
 
         html.find('.message-content').html(messageContent)
 
-        const autoCollapse = game.settings.get('vtm5e', 'autoCollapseDescriptions')
+        const autoCollapse = game.settings.get('vtm5ec', 'autoCollapseDescriptions')
 
         if (!autoCollapse) {
           const content = html.find('.collapsible-content')

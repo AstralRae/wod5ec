@@ -7,13 +7,16 @@
       "mortal": "Mortal",
       "spc": "Story Character",
       "vampire": "Vampire",
-      "werewolf": "Werewolf"
+      "werewolf": "Werewolf",
+      "changeling": "Changeling"
     },
     "Item": {
       "armor": "Armor",
       "auspice": "Auspice",
       "boon": "Boon",
       "clan": "Clan",
+      "legacy": "Legacy",
+      "kith": "Kith",
       "condition": "Condition",
       "creed": "Creed",
       "customRoll": "Custom Roll",
@@ -418,7 +421,8 @@
       "Settings": "Settings",
       "Stats": "Stats",
       "StorytellerNotes": "Storyteller Notes",
-      "TokenSettings": "Token Settings"
+      "TokenSettings": "Token Settings",
+      "Powers": "Powers"
     }
   }
 }

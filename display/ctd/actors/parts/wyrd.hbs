@@ -1,0 +1,9 @@
+<div class="resource flex-group-center wyrd">
+    <div class="resource-content">
+        <div class="resource-counter editable" data-states="/:banality,-:value" data-value="{{wyrd.value}}" data-banality="{{wyrd.banality}}" data-name="system.wyrd">
+            {{#numLoop 10}}
+            <span class="resource-counter-step" data-action="squareCounterChange" data-index="{{this}}" data-state=""></span>
+            {{/numLoop}}
+        </div>
+    </div>
+</div>

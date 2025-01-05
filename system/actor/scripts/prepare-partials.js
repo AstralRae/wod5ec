@@ -64,6 +64,18 @@ export const prepareFeaturesContext = async function (context, actor) {
     context.enrichedBan = await TextEditor.enrichHTML(context.ban)
   }
 
+  if (actorData.gamesystem === 'changeling') {
+    context.ban = context.legacy?.system?.ban || ''
+    context.enrichedBan = await TextEditor.enrichHTML(context.ban)
+    
+    context.frailty = context.kith?.system?.frailty || ''
+    context.enrichedFrailty = await TextEditor.enrichHTML(context.frailty)
+
+    debugger
+    context.personalBans = actorHeaders.personalBans
+    context.enrichedPersonalBans = await TextEditor.enrichHTML(context.personalBans)
+  }
+
   return context
 }
 
@@ -114,7 +126,7 @@ export const prepareNotepadContext = async function (context, actor) {
 
 export const prepareSettingsContext = async function (context, actor) {
   const actorData = actor.system
-  const actorsWithPowers = ['vampire', 'hunter', 'werewolf']
+  const actorsWithPowers = ['vampire', 'hunter', 'werewolf', 'changeling']
 
   // Tab data
   context.tab = context.tabs.settings
@@ -170,6 +182,12 @@ export const prepareSpcStatsContext = async function (context, actor) {
   if (context.currentActorType === 'werewolf' || (context.gamesystem === 'werewolf' && context.settings.enableGifts === true)) {
     context.showGifts = true
     context.gifts = actorData.gifts
+  }
+
+  if (context.currentActorType === 'changeling' || (context.gamesystem === 'changeling' && context.settings.enableArtsAndRealms === true)) {
+    context.showArtsAndRealms = true
+    context.arts = actorData.arts
+    context.realms = actorData.realms
   }
 
   if (context.currentActorType === 'spirit') {

@@ -16,6 +16,9 @@ import { PredatorTypeItemSheet } from '../../item/vtm/predator-type-item-sheet.j
 import { ClanItemSheet } from '../../item/vtm/clan-item-sheet.js'
 import { DisciplineItemSheet } from '../../item/vtm/discipline-item-sheet.js'
 import { BoonItemSheet } from '../../item/vtm/boon-item-sheet.js'
+// Changeling system
+import { LegacyItemSheet } from '../../item/ctd/legacy-item-sheet.js'
+import { KithItemSheet } from '../../item/ctd/kith-legacy-sheet.js'
 // Hunter system
 import { DriveItemSheet } from '../../item/htr/drive-item-sheet.js'
 import { CreedItemSheet } from '../../item/htr/creed-item-sheet.js'
@@ -36,7 +39,7 @@ export class ItemTypes extends BaseDefinitionClass {
 
   static feature = {
     label: 'TYPES.Item.feature',
-    img: 'systems/vtm5e/assets/icons/items/feature.svg',
+    img: 'systems/vtm5ec/assets/icons/items/feature.svg',
     types: ['feature'],
     sheetClass: FeatureItemSheet,
     restrictedActorTypes: [],
@@ -45,7 +48,7 @@ export class ItemTypes extends BaseDefinitionClass {
 
   static customRoll = {
     label: 'TYPES.Item.customRoll',
-    img: 'systems/vtm5e/assets/icons/items/custom-roll.png',
+    img: 'systems/vtm5ec/assets/icons/items/custom-roll.png',
     types: ['customRoll'],
     sheetClass: CustomRollItemSheet,
     restrictedActorTypes: [],
@@ -130,7 +133,7 @@ export class ItemTypes extends BaseDefinitionClass {
 
   static power = {
     label: 'TYPES.Item.power',
-    img: 'systems/vtm5e/assets/icons/items/discipline.png',
+    img: 'systems/vtm5ec/assets/icons/items/discipline.png',
     types: ['power'],
     sheetClass: DisciplineItemSheet,
     restrictedActorTypes: ['vampire', 'ghoul'],
@@ -139,11 +142,32 @@ export class ItemTypes extends BaseDefinitionClass {
 
   static boon = {
     label: 'TYPES.Item.boon',
-    img: 'systems/vtm5e/assets/icons/items/boon.svg',
+    img: 'systems/vtm5ec/assets/icons/items/boon.svg',
     types: ['boon'],
     sheetClass: BoonItemSheet,
     restrictedActorTypes: ['vampire', 'ghoul'],
     excludedActorTypes: ['spc']
+  }
+
+  // Changeling Items
+  static legacy = {
+    label: 'TYPES.Item.legacy',
+    img: '',
+    types: ['legacy'],
+    sheetClass: LegacyItemSheet,
+    restrictedActorTypes: ['changeling'],
+    excludedActorTypes: ['spc'],
+    limitOnePerActor: true
+  }
+
+  static kith = {
+    label: 'TYPES.Item.kith',
+    img: '',
+    types: ['kith'],
+    sheetClass: KithItemSheet,
+    restrictedActorTypes: ['changeling'],
+    excludedActorTypes: ['spc'],
+    limitOnePerActor: true
   }
 
   // Hunter Items
@@ -169,7 +193,7 @@ export class ItemTypes extends BaseDefinitionClass {
 
   static perk = {
     label: 'TYPES.Item.perk',
-    img: 'systems/vtm5e/assets/icons/items/edge.png',
+    img: 'systems/vtm5ec/assets/icons/items/edge.png',
     types: ['perk'],
     sheetClass: PerkItemSheet,
     restrictedActorTypes: ['hunter'],
@@ -178,7 +202,7 @@ export class ItemTypes extends BaseDefinitionClass {
 
   static edgepool = {
     label: 'TYPES.Item.edgepool',
-    img: 'systems/vtm5e/assets/icons/items/edgepool.png',
+    img: 'systems/vtm5ec/assets/icons/items/edgepool.png',
     types: ['edgepool'],
     sheetClass: EdgePoolItemSheet,
     restrictedActorTypes: ['hunter'],
@@ -217,7 +241,7 @@ export class ItemTypes extends BaseDefinitionClass {
 
   static gift = {
     label: 'TYPES.Item.gift',
-    img: 'systems/vtm5e/assets/icons/items/gift.png',
+    img: 'systems/vtm5ec/assets/icons/items/gift.png',
     types: ['gift'],
     sheetClass: GiftItemSheet,
     restrictedActorTypes: ['werewolf'],
