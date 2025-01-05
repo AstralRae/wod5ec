@@ -19,6 +19,10 @@
       "url": "https://github.com/Rayji96",
       "email": "rayji96@gmail.com",
       "discord": "weinerdolphin#3175"
+    },
+    {
+      "name": "Rae",
+      "url": "https://github.com/AstralRae"
     }
   ],
   "esmodules": [
@@ -259,13 +263,13 @@
     "distance": 5
   },
   "initiative": "1d10",
-  "changelog": "https://github.com/WoD5E-Developers/wod5e/releases",
+  "changelog": "https://github.com/AstralRae/wod5ec/releases",
   "license": "./LICENSE.md",
-  "url": "https://github.com/WoD5E-Developers/wod5e",
-  "bugs": "https://github.com/WoD5E-Developers/wod5e/issues",
+  "url": "https://github.com/AstralRae/wod5ec",
+  "bugs": "https://github.com/AstralRae/wod5ec/issues",
   "background": "systems/vtm5ec/assets/images/wodcity.jpg",
-  "manifest": "https://github.com/WoD5E-Developers/wod5e/releases/download/5.0.11/system.json",
-  "download": "https://github.com/WoD5E-Developers/wod5e/releases/download/5.0.11/vtm5e.zip",
+  "manifest": "https://github.com/AstralRae/wod5ec/releases/download/5.0.11/system.json",
+  "download": "https://github.com/AstralRae/wod5ec/releases/download/5.0.11/vtm5e.zip",
   "flags": {
     "hotReload": {
       "extensions": [
